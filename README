@@ -1,0 +1,4 @@
+the carproc and carcrop functions take an image path and return an image- they're supposed to be used for in-situ processing by the car
+
+
+the other functions were all for batch processing the images
