@@ -18,13 +18,12 @@ def colorProc(img_path):
     upper_white = np.array([255, 85, 255], dtype='uint8')
     mask_white = cv2.inRange(hsv, lower_white, upper_white)
 
-    y = cv2.bitwise_and(img,img,mask=mask_yellow)
+    #y = cv2.bitwise_and(img,img,mask=mask_yellow)
+    y = cv2.cvtColor(mask_yellow,cv2.COLOR_GRAY2BGR)
+    y[:,:,0] = mask_yellow*255
+
     w = cv2.bitwise_and(img,img,mask=mask_white)
 
-    y = y*255
-#    y[:,:,0] = mask_yellow*255
-#    y[:,:,1] = mask_yellow*255
-#    y[:,:,2] = mask_yellow*0
 
     # reduce noise
     gauss_gray = cv2.GaussianBlur(w, (3, 3), 0)
@@ -54,6 +53,7 @@ def colorProc(img_path):
     img = img[vlim1:vlim2, hlim1:hlim2, :]
     mask[vlim1:vlim2, hlim1:hlim2, :] = cv2.bitwise_or(mask[vlim1:vlim2, hlim1:hlim2, :], img)
     img = mask
+
     return img
 
 def lineProc(img_path):
