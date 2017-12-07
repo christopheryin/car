@@ -2,7 +2,7 @@ import cv2
 from carcode import *
 
 img_path = 'pic.jpg'
-img = colorProc(img_path)
+img = colorProc2(img_path)
 og = cv2.imread(img_path)
 
 cv2.imshow('adf',img)
