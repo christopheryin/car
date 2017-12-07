@@ -60,11 +60,7 @@ def colorProc(img_path):
 
     img = cv2.imread(img_path, cv2.IMREAD_COLOR)
     gray = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
-<<<<<<< HEAD
     hsl = cv2.cvtColor(img, cv2.COLOR_RGB2HSV)
-=======
-    hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)      #CHANGE THE COLOR SPACE ON THIS
->>>>>>> 1e2c946e694aae6feb209ffb7bfdb4147b072a02
 
     # limits of yellow mask
     lower_yellow = np.array([50, 50, 50], dtype='uint8')
