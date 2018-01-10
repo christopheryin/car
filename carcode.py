@@ -1,16 +1,17 @@
+#image processing for batch of images
+
 import numpy as np
 import cv2
 
-
+#filter for white and yellow in image, without cropping
 def colorProc2(img_path):
 
     img = cv2.imread(img_path, cv2.IMREAD_COLOR)
-    gray = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
-    hsv = cv2.cvtColor(img, cv2.COLOR_RGB2HLS) #change to correct input color space
+    hsv = cv2.cvtColor(img, cv2.COLOR_RGB2HLS)
 
     # limits of yellow mask
-    lower_yellow = np.array([70, 120, 40], dtype='uint8')
-    upper_yellow = np.array([90, 170, 70], dtype='uint8')
+    lower_yellow = np.array([0, 0, 0], dtype='uint8')
+    upper_yellow = np.array([255, 255, 254], dtype='uint8')
     mask_yellow = cv2.inRange(hsv, lower_yellow, upper_yellow)
 
     # limits of white mask
@@ -18,12 +19,9 @@ def colorProc2(img_path):
     upper_white = np.array([255, 255, 255], dtype='uint8')
     mask_white = cv2.inRange(hsv, lower_white, upper_white)
 
-    #y = cv2.bitwise_and(img,img,mask=mask_yellow)
-    y = cv2.cvtColor(mask_yellow,cv2.COLOR_GRAY2BGR)
-    y[:,:,0] = mask_yellow*255
-
-    w = cv2.bitwise_and(img,img,mask=mask_white)
-
+    # yellow and white isolated in image
+    y = cv2.bitwise_and(img, img, mask=mask_yellow)
+    w = cv2.bitwise_and(img, img, mask=mask_white)
 
     # reduce noise
     gauss_gray = cv2.GaussianBlur(w, (3, 3), 0)
@@ -32,11 +30,10 @@ def colorProc2(img_path):
     low_threshold = 50
     high_threshold = 160
     w = cv2.Canny(gauss_gray, low_threshold, high_threshold)
-    w = cv2.cvtColor(w,cv2.COLOR_GRAY2BGR)
+    w = cv2.cvtColor(w, cv2.COLOR_GRAY2BGR)
 
-    yw = y + w
+    img = y + w
 
-    img = yw
     vlim1 = 30
     vlim2 = 105
     hlim1 = 10
@@ -56,19 +53,15 @@ def colorProc2(img_path):
 
     return img
 
+#filter for white and yellow in image, with image cropping
 def colorProc(img_path):
 
     img = cv2.imread(img_path, cv2.IMREAD_COLOR)
-    gray = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
-<<<<<<< HEAD
-    hsl = cv2.cvtColor(img, cv2.COLOR_RGB2HSV)
-=======
-    hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)      #CHANGE THE COLOR SPACE ON THIS
->>>>>>> 1e2c946e694aae6feb209ffb7bfdb4147b072a02
+    hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
     # limits of yellow mask
-    lower_yellow = np.array([50, 50, 50], dtype='uint8')
-    upper_yellow = np.array([110, 255, 255], dtype='uint8')
+    lower_yellow = np.array([25, 50, 50], dtype='uint8')
+    upper_yellow = np.array([32, 255, 255], dtype='uint8')
     mask_yellow = cv2.inRange(hsv, lower_yellow, upper_yellow)
 
     # limits of white mask
@@ -76,12 +69,9 @@ def colorProc(img_path):
     upper_white = np.array([255, 85, 255], dtype='uint8')
     mask_white = cv2.inRange(hsv, lower_white, upper_white)
 
-    #y = cv2.bitwise_and(img,img,mask=mask_yellow)
-    y = cv2.cvtColor(mask_yellow,cv2.COLOR_GRAY2BGR)
-    y[:,:,0] = mask_yellow*255
-
+    #yellow and white isolated in image
+    y = cv2.bitwise_and(img,img,mask=mask_yellow)
     w = cv2.bitwise_and(img,img,mask=mask_white)
-
 
     # reduce noise
     gauss_gray = cv2.GaussianBlur(w, (3, 3), 0)
@@ -92,9 +82,8 @@ def colorProc(img_path):
     w = cv2.Canny(gauss_gray, low_threshold, high_threshold)
     w = cv2.cvtColor(w,cv2.COLOR_GRAY2BGR)
 
-    yw = y + w
+    img = y + w
 
-    img = yw
     vlim1 = 30
     vlim2 = 105
     hlim1 = 10
@@ -114,6 +103,7 @@ def colorProc(img_path):
 
     return img
 
+#line detection
 def lineProc(img_path):
 
     img = cv2.imread(img_path, cv2.IMREAD_COLOR)
@@ -161,7 +151,7 @@ def lineProc(img_path):
 
     return img
 
-
+#crop image to remove horizon line
 def carcrop(img_path):
 
     img = cv2.imread(img_path)

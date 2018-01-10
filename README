@@ -1,4 +1,1 @@
-the carproc and carcrop functions take an image path and return an image- they're supposed to be used for in-situ processing by the car
-
-
-the other functions were all for batch processing the images
+Code for processing images from a pi camera mounted on a remote control car. Goal is for vehicle to drive autonomously by tracking yellow and white lane lines. Code filters image and isolates yellow and white lane lines. Repository includes samples of processed images.
