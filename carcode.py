@@ -1,4 +1,4 @@
-#image processing for batch of images
+#for processing individual images with processing not saved
 
 import numpy as np
 import cv2
